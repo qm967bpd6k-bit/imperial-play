@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111114">
+<title>Imperial Play — Entretenimiento</title>
+<style>
+:root{--bg:#101014;--panel:#19191f;--panel2:#222229;--gold:#d8b45e;--gold2:#f0d58b;--muted:#aaa9b0;--line:#39343a;--white:#f7f4ed}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#38301d 0,#101014 42%);color:var(--white);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:26px 18px 18px;text-align:center;border-bottom:1px solid var(--line)}
+.crown{font-size:28px;color:var(--gold)}h1{margin:2px 0 0;color:var(--gold2);font:700 clamp(28px,6vw,42px)/1.1 Georgia,serif;letter-spacing:2px}
+.tag{color:var(--muted);font-size:11px;letter-spacing:3px;margin-top:8px}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px}
+button{border:1px solid #62502d;background:#211e19;color:var(--gold2);border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
+button:hover{background:#332a1b}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+button.active{background:var(--gold);color:#17130b}
+main{width:min(980px,calc(100% - 28px));margin:18px auto 48px}
+.hero{padding:25px 22px;border:1px solid #66522e;border-radius:20px;background:linear-gradient(135deg,#242019,#17171c 65%);text-align:center}
+.hero h2{font:600 26px Georgia,serif;color:var(--gold2);margin:0 0 8px}.hero p{color:#d0cbd0;margin:0 auto;max-width:600px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+.card,.game{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card .emoji{font-size:28px}.card h3,.game h2{color:var(--gold2);margin:7px 0}
+.muted{color:var(--muted)}.section-title{font:600 23px Georgia,serif;color:var(--gold2);margin:28px 0 12px}
+.hidden{display:none!important}
+.game{margin-top:18px}.game-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--panel2);padding:8px 12px;border-radius:10px;color:var(--gold2);font-size:14px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:18px}
+.tile{min-height:70px;font-size:27px;background:#29252a;border:1px solid #66522e;color:var(--gold2);padding:8px}
+.tile.revealed,.tile.matched{background:#42351e;border-color:var(--gold)}
+.tile.matched{opacity:.55}
+.action{margin-top:14px}
+#reactionPad{width:100%;min-height:150px;font-size:20px;background:#29252a}
+#reactionPad.ready{background:#23402e;border-color:#64b77b;color:#d8ffe1}
+#reactionPad.wait{background:#482b2b;border-color:#bd6767;color:#ffe0e0}
+.quiz-options{display:grid;gap:9px;margin-top:14px}.quiz-options button{text-align:left}
+footer{text-align:center;padding:24px;color:var(--muted);border-top:1px solid var(--line);font-size:12px}
+@media(max-width:420px){.memory-grid{gap:6px}.tile{min-height:62px;font-size:23px;padding:5px}nav button{padding:9px 11px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="crown" aria-hidden="true">♛</div>
+  <h1>IMPERIAL PLAY</h1>
+  <div class="tag">ENTRETENIMIENTO · HABILIDAD · DIVERSIÓN</div>
+</header>
+<nav aria-label="Navegación principal">
+  <button class="active" data-view="home">Inicio</button>
+  <button data-view="games">Juegos</button>
+  <button data-view="scores">Mis resultados</button>
+</nav>
+<main>
+  <section id="home">
+    <div class="hero">
+      <h2>Bienvenido a Imperial Play</h2>
+      <p>Un espacio para poner a prueba tu memoria, rapidez y conocimientos. Juega gratis y mejora tus propias marcas.</p>
+    </div>
+    <h2 class="section-title">Elige tu próximo reto</h2>
+    <div class="grid">
+      <article class="card"><div class="emoji">🧠</div><h3>Memoria imperial</h3><p class="muted">Encuentra las parejas y entrena tu memoria.</p><button data-launch="memory">Jugar</button></article>
+      <article class="card"><div class="emoji">⚡</div><h3>Reflejos reales</h3><p class="muted">Mide tu tiempo de reacción cuando cambie la señal.</p><button data-launch="reaction">Jugar</button></article>
+      <article class="card"><div class="emoji">📚</div><h3>Desafío de cultura</h3><p class="muted">Responde preguntas y suma puntos por acierto.</p><button data-launch="quiz">Jugar</button></article>
+    </div>
+  </section>
+
+  <section id="games" class="hidden">
+    <h2 class="section-title">Juegos disponibles</h2>
+    <div class="grid">
+      <article class="card"><div class="emoji">🧠</div><h3>Memoria imperial</h3><p class="muted">6 parejas. Menos movimientos, mejor resultado.</p><button data-launch="memory">Abrir juego</button></article>
+      <article class="card"><div class="emoji">⚡</div><h3>Reflejos reales</h3><p class="muted">Espera la señal verde y pulsa tan rápido como puedas.</p><button data-launch="reaction">Abrir juego</button></article>
+      <article class="card"><div class="emoji">📚</div><h3>Desafío de cultura</h3><p class="muted">Cinco preguntas por ronda.</p><button data-launch="quiz">Abrir juego</button></article>
+    </div>
+  </section>
+
+  <section id="play" class="hidden">
+    <div class="game-head"><button id="backBtn">← Volver a juegos</button><div class="stats"><span class="stat" id="gameStat">Reto</span></div></div>
+    <div id="memoryGame" class="game hidden">
+      <h2>Memoria imperial</h2><p class="muted">Encuentra las seis parejas. Toca dos cartas para descubrir sus símbolos.</p>
+      <div class="stats"><span class="stat">Movimientos: <b id="moves">0</b></span><span class="stat">Parejas: <b id="pairs">0/6</b></span></div>
+      <div id="memoryGrid" class="memory-grid"></div>
+      <button class="action" id="resetMemory">Nueva partida</button>
+      <p id="memoryMessage" class="muted" aria-live="polite"></p>
+    </div>
+    <div id="reactionGame" class="game hidden">
+      <h2>Reflejos reales</h2><p class="muted">Pulsa iniciar. Cuando el panel se ponga verde, tócalo lo más rápido posible. No pulses antes.</p>
+      <button id="reactionStart">Iniciar prueba</button>
+      <button id="reactionPad" class="action" disabled>Espera la señal…</button>
+      <p id="reactionMessage" class="muted" aria-live="polite">Tu mejor tiempo aparecerá en Mis resultados.</p>
+    </div>
+    <div id="quizGame" class="game hidden">
+      <h2>Desafío de cultura</h2><p class="muted" id="quizQuestion">Pregunta 1 de 5</p>
+      <div id="quizPrompt"></div><div id="quizOptions" class="quiz-options"></div>
+      <p id="quizMessage" class="muted" aria-live="polite"></p>
+      <button id="quizNext" class="action hidden">Siguiente pregunta</button>
+    </div>
+  </section>
+
+  <section id="scores" class="hidden">
+    <h2 class="section-title">Mis resultados</h2>
+    <div class="grid">
+      <article class="card"><h3>🧠 Memoria</h3><p class="muted">Mejor partida</p><strong id="bestMemory">Todavía sin resultados</strong></article>
+      <article class="card"><h3>⚡ Reflejos</h3><p class="muted">Mejor tiempo</p><strong id="bestReaction">Todavía sin resultados</strong></article>
+      <article class="card"><h3>📚 Cultura</h3><p class="muted">Mejor puntuación</p><strong id="bestQuiz">Todavía sin resultados</strong></article>
+    </div>
+    <p class="muted">Los resultados se guardan únicamente en este navegador en este prototipo.</p>
+    <button id="clearScores">Borrar mis resultados</button>
+  </section>
+</main>
+<footer>IMPERIAL PLAY · Prototipo de entretenimiento gratuito. Sin apuestas, depósitos ni premios económicos.</footer>
+<script>
+const views=['home','games','play','scores'];
+function showView(id){views.forEach(v=>document.getElementById(v).classList.toggle('hidden',v!==id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function getScores(){try{return JSON.parse(localStorage.getItem('imperialScores')||'{}')}catch{return {}}}
+function saveScore(key,val){const s=getScores();s[key]=val;localStorage.setItem('imperialScores',JSON.stringify(s));renderScores()}
+function renderScores(){const s=getScores();document.getElementById('bestMemory').textContent=s.memory?`${s.memory} movimientos`:'Todavía sin resultados';document.getElementById('bestReaction').textContent=s.reaction?`${s.reaction} ms`:'Todavía sin resultados';document.getElementById('bestQuiz').textContent=s.quiz!==undefined?`${s.quiz}/5 aciertos`:'Todavía sin resultados'}
+const gameIds=['memoryGame','reactionGame','quizGame'];
+function launch(name){showView('play');gameIds.forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==name+'Game'));if(name==='memory')newMemory();if(name==='reaction')resetReaction();if(name==='quiz')newQuiz()}
+document.querySelectorAll('[data-launch]').forEach(b=>b.addEventListener('click',()=>launch(b.dataset.launch)));
+document.getElementById('backBtn').addEventListener('click',()=>showView('games'));
+
+// Memory game
+const symbols=['♛','♦','♠','♥','★','♣'];let deck=[],first=null,lock=false,moves=0,matched=0;
+function newMemory(){deck=[...symbols,...symbols].sort(()=>Math.random()-.5);first=null;lock=false;moves=0;matched=0;document.getElementById('moves').textContent='0';document.getElementById('pairs').textContent='0/6';document.getElementById('memoryMessage').textContent='';const grid=document.getElementById('memoryGrid');grid.innerHTML='';deck.forEach((sym,i)=>{const b=document.createElement('button');b.className='tile';b.textContent='?';b.setAttribute('aria-label','Carta oculta');b.addEventListener('click',()=>flip(b,i));grid.appendChild(b)})}
+function flip(btn,i){if(lock||btn.classList.contains('matched')||btn.classList.contains('revealed'))return;btn.textContent=deck[i];btn.classList.add('revealed');if(!first){first={btn,i};return}moves++;document.getElementById('moves').textContent=moves;if(deck[first.i]===deck[i]){first.btn.classList.add('matched');btn.classList.add('matched');first=null;matched++;document.getElementById('pairs').textContent=matched+'/6';if(matched===6){document.getElementById('memoryMessage').textContent=`¡Completado! Lo has conseguido en ${moves} movimientos.`;const old=getScores().memory;if(!old||moves<old)saveScore('memory',moves)}}else{lock=true;const prev=first;first=null;setTimeout(()=>{prev.btn.textContent='?';btn.textContent='?';prev.btn.classList.remove('revealed');btn.classList.remove('revealed');lock=false},750)}}
+document.getElementById('resetMemory').addEventListener('click',newMemory);
+
+// Reaction game
+let reactionTimer=null,startedAt=0,state='idle';
+const pad=document.getElementById('reactionPad'),reactionMsg=document.getElementById('reactionMessage');
+function resetReaction(){clearTimeout(reactionTimer);state='idle';pad.disabled=true;pad.className='action';pad.textContent='Espera la señal…';reactionMsg.textContent='Pulsa «Iniciar prueba» para comenzar.'}
+document.getElementById('reactionStart').addEventListener('click',()=>{resetReaction();state='waiting';pad.disabled=false;pad.classList.add('wait');pad.textContent='No pulses todavía';reactionMsg.textContent='Concéntrate…';reactionTimer=setTimeout(()=>{state='ready';startedAt=performance.now();pad.className='action ready';pad.textContent='¡AHORA!'},1200+Math.random()*2600)});
+pad.addEventListener('click',()=>{if(state==='waiting'){clearTimeout(reactionTimer);state='idle';pad.disabled=true;pad.className='action';pad.textContent='Demasiado pronto';reactionMsg.textContent='Has pulsado antes de la señal. Inténtalo otra vez.'}else if(state==='ready'){const ms=Math.round(performance.now()-startedAt);state='done';pad.disabled=true;pad.className='action';pad.textContent='Prueba completada';reactionMsg.textContent=`Tu tiempo: ${ms} milisegundos.`;const old=getScores().reaction;if(!old||ms<old)saveScore('reaction',ms)}});
+
+// Quiz
+const questions=[
+ {q:'¿Cuál es el planeta más grande del sistema solar?',a:['Marte','Júpiter','Venus'],c:1},
+ {q:'¿Cuántos lados tiene un hexágono?',a:['Cinco','Seis','Ocho'],c:1},
+ {q:'¿Cuál es la capital de Portugal?',a:['Oporto','Lisboa','Coímbra'],c:1},
+ {q:'¿Qué gas absorben principalmente las plantas?',a:['Oxígeno','Nitrógeno','Dióxido de carbono'],c:2},
+ {q:'¿Cuánto es 9 × 7?',a:['56','63','72'],c:1}
+];let qi=0,points=0,answered=false;
+function newQuiz(){qi=0;points=0;showQuestion()}
+function showQuestion(){answered=false;document.getElementById('quizNext').classList.add('hidden');document.getElementById('quizMessage').textContent='';document.getElementById('quizQuestion').textContent=`Pregunta ${qi+1} de ${questions.length}`;const q=questions[qi];document.getElementById('quizPrompt').innerHTML='<h3>'+q.q+'</h3>';const box=document.getElementById('quizOptions');box.innerHTML='';q.a.forEach((a,i)=>{const b=document.createElement('button');b.textContent=a;b.addEventListener('click',()=>answer(i));box.appendChild(b)})}
+function answer(i){if(answered)return;answered=true;const q=questions[qi];const correct=i===q.c;if(correct)points++;document.getElementById('quizMessage').textContent=correct?'¡Correcto!':'No es correcto. La respuesta era: '+q.a[q.c];document.querySelectorAll('#quizOptions button').forEach(b=>b.disabled=true);const next=document.getElementById('quizNext');next.textContent=qi===questions.length-1?'Ver resultado':'Siguiente pregunta';next.classList.remove('hidden')}
+document.getElementById('quizNext').addEventListener('click',()=>{if(qi<questions.length-1){qi++;showQuestion()}else{document.getElementById('quizQuestion').textContent='Ronda completada';document.getElementById('quizPrompt').innerHTML=`<h3>Has conseguido ${points} de 5 aciertos.</h3>`;document.getElementById('quizOptions').innerHTML='';document.getElementById('quizMessage').textContent='¡Gracias por jugar!';document.getElementById('quizNext').classList.add('hidden');const old=getScores().quiz;if(old===undefined||points>old)saveScore('quiz',points)}});
+document.getElementById('clearScores').addEventListener('click',()=>{if(confirm('¿Quieres borrar todos tus resultados guardados en este navegador?')){localStorage.removeItem('imperialScores');renderScores()}});
+renderScores();
+</script>
+</body>
+</html>
